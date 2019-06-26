@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Книга басен И. А. Крылова</title>
+  <link href="assets/fontawesome.min.css" type="text/css" rel="stylesheet" />
+  <link href="assets/app.css" type="text/css" rel="stylesheet" />
+  <script src="assets/vue.js"></script>
+  <script src="assets/app.js" defer></script>
+</head>
+<body>
+  <div id="app">
+    <div class="controls">
+      <div class="btn menu"
+           @click="toggleSlide(menuSlide)"
+           :disabled="currentSlide === menuSlide">
+        <i class="fas fa-bars"></i>
+      </div>
+      <div class="btn volume" @click="toggleSound">
+        <i class="fas" :class="`fa-volume-${sound ? 'up' : 'off'}`"></i>
+      </div>
+    </div>
+    <div class="nav">
+      <div class="btn left"
+           @click="toggleSlide(currentSlide - 1)"
+           :disabled="currentSlide === 1">
+        <i class="fas fa-chevron-left"></i>
+      </div>
+      <div class="btn right"
+           @click="toggleSlide(currentSlide + 1)"
+           :disabled="currentSlide === slidesCount - 1">
+        <i class="fas fa-chevron-right"></i>
+      </div>
+    </div>
+    <audio id="sound" volume="0.5" :src="soundPath" loop controls></audio>
+    <div class="view">
+      <div class="slide" @click="toggleSlide(currentSlide + 1)" v-for="i in slidesCount" :key="i" v-if="i === currentSlide">
+        <div class="slide-img" :style="{backgroundImage: `url('${gifPath}${i}.gif?time=${updateGif}')`}" :alt="i" />
+        <div class="slide-menu" v-if="currentSlide === menuSlide">
+          <div class="slide-menu-title">Содержание</div>
+          <div class="menu-item" v-for="m in menuSlides" :key="m.title" @click="toggleSlide(m.slide - 1)">
+            <span class="title">{{m.title}}</span>
+            <span class="dots"></span>
+            <span class="page">{{m.slide}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
